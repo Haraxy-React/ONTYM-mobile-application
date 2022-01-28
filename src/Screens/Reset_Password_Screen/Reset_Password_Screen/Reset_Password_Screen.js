@@ -3,7 +3,7 @@ import React ,{useState,useEffect}from 'react';
 
 import { Hoshi } from 'react-native-textinput-effects';
 import { TextInput } from 'react-native-gesture-handler';
-const Password_Screen= ({navigation}) => {
+const Reset_Password_Screen = ({navigation}) => {
 
 const [Password,setPassword] = useState('')
 const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -35,15 +35,14 @@ useEffect(() => {
             <View style={{alignItems:"center"}}>
   <Image  resizeMode={"contain"} style={{width:"80%",height:"30%",marginTop:50}}source={require('../../../Assets/logo.png')}/>
 <View style={{alignItems:"center",flexWrap:"wrap"}}> 
-<Text style={{color:"#2D9CDB",fontWeight:"700",fontSize:24,marginTop:40}}>Login! </Text>
-<Text style={{color:"#000000",fontWeight:"400",fontSize:14}}>You're E-mail has been registered in</Text>
+<Text style={{color:"#2D9CDB",fontWeight:"700",fontSize:24,marginTop:40}}>Reset Password </Text>
+<Text style={{color:"#000000",fontWeight:"400",fontSize:14,textAlign:"center",paddingHorizontal:60,marginTop:10}}>Please enter your new password and Confirm the password.</Text>
 
 </View>
-<Image  resizeMode={"contain"} style={{width:"40%",height:50,}} source={require('../../../Assets/Ekostay-logo.png')}/>
 
 <Hoshi
 style={{width:"80%",alignSelf:"center",marginTop:10}}
-    label={'Password'}
+    label={'New Password'}
     labelStyle={{marginLeft:-5,marginTop:5}}
     borderColor={'#ABB4BD'}
     secureTextEntry={true}
@@ -52,7 +51,7 @@ style={{width:"80%",alignSelf:"center",marginTop:10}}
   />
    <Hoshi
 style={{width:"80%",alignSelf:"center",}}
-    label={'Confirm Password'}
+    label={'Confirm New Password'}
     labelStyle={{marginLeft:-5,marginTop:5}}
     borderColor={'#ABB4BD'}
     secureTextEntry={true}
@@ -63,13 +62,12 @@ style={{width:"80%",alignSelf:"center",}}
   
     
             <TouchableOpacity 
-               onPress={() => { console.log('Email',Password.length);}}
+               onPress={() => { navigation.navigate('TabBarNavigation')}}
             style={Password.length !== 0 &&  Password === ConfirmPassword ? {alignSelf:"center" ,backgroundColor:"#2D9CDB",width:"80%",height:46,justifyContent:"center",borderRadius:5,marginTop:50}: {alignSelf:"center" ,backgroundColor:"#D9DDE2",width:"80%",height:46,justifyContent:"center",borderRadius:5,marginTop:50}}>
                 <Text style={{alignSelf:"center",color:"#fff",fontSize:14,fontWeight:"500"}}>
-                    Login
-                </Text>
+                   Update </Text>
             </TouchableOpacity>
-            <Text style={{color:"#2D9CDB",fontSize:14,fontWeight:"400",marginTop:30}} onPress={() => {navigation.navigate('Forgot_Password')} }> Forgot Password? </Text>
+
     
    
     
@@ -81,7 +79,7 @@ style={{width:"80%",alignSelf:"center",}}
   );
 };
 
-export default Password_Screen;
+export default Reset_Password_Screen ;
 
 
 const styles = StyleSheet.create({

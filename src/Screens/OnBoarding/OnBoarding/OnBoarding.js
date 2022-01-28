@@ -94,19 +94,27 @@ const OnBoarding = ({navigation}) => {
                             }}
                         >
                             <Text style={{
-                                ...FONTS.h1,
-                                color: COLORS.black,
+                                fontFamily:"Poppins-Bold",
+                                fontSize:24,
+                                fontWeight:"700",
+                                color: "#313131",
                                 textAlign: 'center',
+                                lineHeight:36
                             }}
                             >
                                 {item.title}
                             </Text>
 
                             <Text style={{
-                                ...FONTS.body3,
-                                textAlign: 'center',
+                                   fontFamily:"Poppins-Regular",
+                                   fontStyle:"normal",
+                                   fontSize:18,
+                                   fontWeight:"300",
+                                   color: "#313131",
+                                   textAlign: 'center',
+                                   lineHeight:27,
                                 marginTop: SIZES.base,
-                                color: COLORS.gray,
+                              
                             }}
                             >
                                 {item.description}
