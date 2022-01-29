@@ -113,14 +113,14 @@ return(
              <Stack.Navigator  screenOptions={{
     headerShown: false
   }}>  
-    
+        <Stack.Screen name="TabBarNavigation" component={TabNavigator} options={{ headerShown: false }}  />
                  <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ headerShown: false }} />
                  <Stack.Screen name="Login_Screen" component={Login_Screen} option={{ headerShown: false }} />
                  <Stack.Screen name="Password_Screen" component={Password_Screen} option={{ headerShown: false }} />
                  <Stack.Screen name="Forgot_Password" component={Forgot_Password} option={{ headerShown: false }} />
                  <Stack.Screen name="Check_Email_Screen" component={Check_Email_Screen} option={{ headerShown: false }} />
                  <Stack.Screen name="Reset_Password_Screen" component={Reset_Password_Screen} option={{ headerShown: false }} />
-                 <Stack.Screen name="TabBarNavigation" component={TabNavigator} options={{ headerShown: false }}  />
+             
             </Stack.Navigator>
          </NavigationContainer>
      );
