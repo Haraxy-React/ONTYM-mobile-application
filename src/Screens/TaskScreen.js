@@ -6,11 +6,11 @@ import Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from "moment" 
 import profilelarge from "../Assets/profile1.png"
 import profileimagesmall from "../Assets/profilesmall.png"
-
+import { TextInput } from 'react-native-paper';
 import paramount from "../Assets/paramount_vector.png";
 import mongolia from "../Assets/mongolia_vector.png";
 import lake from "../Assets/Lake_vector.png";
-import { TextInput } from 'react-native-paper';
+// import { TextInput } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker'
 import Multiselect from 'multiselect-react-dropdown';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -300,6 +300,12 @@ const closesheet = () => {
     
         </View>
       <View >
+        {/* <View style={{height:60,borderWidth:2}}>
+          <Text style={{backgroundColor:"#fff",width:50,position:"absolute",top:-13,left:30}}>   asdas  </Text>
+          <TextInput placeholder="asf" />
+
+       
+        </View> */}
        
       <TextInput
       label="Start Date"

@@ -21,13 +21,35 @@
   import TaskScreen from './src/Screens/TaskScreen';
 import Setting_Screen from './src/Screens/Setting_Screen';
 import Properties_screen from './src/Screens/Properties_screen';
+import Properties_screen1 from './src/Screens/Properties_screen1';
+import Properties_screen2 from './src/Screens/Properties_screen2';
+import Pre_check from './src/Screens/Pre_check';
+import inventory from './src/Screens/inventory';
+import Maintenance from './src/Screens/Maintenance';
 
 
  import { useFonts } from 'expo-font';
+import Booking_Screen from './src/Screens/Booking_Screen';
  
  // screen for stack & tabs
  const Stack = createStackNavigator();
  const Tab = createBottomTabNavigator();
+ const setting = () => {
+    return (
+
+      <View>
+      <BottomSheet
+      ref={sheetRef}
+      snapPoints={[  "81%",0,0]}
+      borderRadius={20}
+      onOpenEnd={opensheet}
+      initialSnap={0}
+      onCloseEnd={closesheet}
+      renderContent={renderContent}
+    />
+    </View>
+    )
+ } 
  const TabButton = (props) => {
     const { item, onPress, accessibilityState } = props;
     const focused = accessibilityState.selected;
@@ -58,10 +80,26 @@ import Properties_screen from './src/Screens/Properties_screen';
   }
  const TabArr = [
     { route: 'TaskScreen', label: 'Tasks', type: Icons.Ionicons, icon: 'checkmark-done-sharp', component: TaskScreen, color: "#E2E2EC", alphaClr: "#fff" },
-    { route: 'Properties_screen', label: 'Properties', type: Icons.MaterialCommunityIcons, icon: 'bank', component: Properties_screen, color: "#E2E2EC", alphaClr: "#fff" },
+    { route: 'Properties_stack', label: 'Properties', type: Icons.MaterialCommunityIcons, icon: 'bank', component: Properties_stack , color: "#E2E2EC", alphaClr: "#fff" },
+    { route: 'Booking_Screen ', label: 'Booking', type: Icons.MaterialCommunityIcons, icon: 'bank-outline', component: Booking_Screen , color: "#E2E2EC", alphaClr: "#fff" },
     { route: 'Notification_Screen', label: 'Notification', type: Icons.MaterialIcons, icon: 'notifications-on', component: Notification_Screen, color: "#E2E2EC", alphaClr: "#fff" },
     { route: 'Setting_Screen"', label: 'Setting', type: Icons.Ionicons, icon: 'settings-sharp', component: Setting_Screen, color: "#E2E2EC", alphaClr: "#fff"},
   ];
+
+  function Properties_stack () {
+    return(
+      <Stack.Navigator  screenOptions={{
+        headerShown: false
+      }}>  
+            <Stack.Screen name="Properties_screen" component={Properties_screen} options={{ headerShown: false }}  />
+                     <Stack.Screen name="Properties_screen1" component={Properties_screen1} options={{ headerShown: false }} />
+                     <Stack.Screen name="Properties_screen2" component={Properties_screen2} options={{ headerShown: false }} />
+                     <Stack.Screen name="Pre_check" component={Pre_check} options={{ headerShown: false }}  />
+                     <Stack.Screen name="inventory" component={inventory} options={{ headerShown: false }} />
+                     <Stack.Screen name="Maintenance" component={Maintenance} options={{ headerShown: false }} />
+                </Stack.Navigator>
+    )
+  }
 function TabNavigator () {
 return(
 
@@ -113,14 +151,14 @@ return(
              <Stack.Navigator  screenOptions={{
     headerShown: false
   }}>  
-        <Stack.Screen name="TabBarNavigation" component={TabNavigator} options={{ headerShown: false }}  />
+        
                  <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ headerShown: false }} />
                  <Stack.Screen name="Login_Screen" component={Login_Screen} option={{ headerShown: false }} />
                  <Stack.Screen name="Password_Screen" component={Password_Screen} option={{ headerShown: false }} />
                  <Stack.Screen name="Forgot_Password" component={Forgot_Password} option={{ headerShown: false }} />
                  <Stack.Screen name="Check_Email_Screen" component={Check_Email_Screen} option={{ headerShown: false }} />
                  <Stack.Screen name="Reset_Password_Screen" component={Reset_Password_Screen} option={{ headerShown: false }} />
-             
+                 <Stack.Screen name="TabBarNavigation" component={TabNavigator} options={{ headerShown: false }}  />
             </Stack.Navigator>
          </NavigationContainer>
      );
