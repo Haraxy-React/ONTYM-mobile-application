@@ -1,0 +1,12 @@
+export const dbTime = "h:mm:ss a";
+export const dbDate = "DD-MM-YYYY";
+export const dateCalendar = "YYYY-MM-DD";
+export const dbDateTime = "YYYY-MM-DD h:mm:ss a";
+export const filterDateTime = "YYYY-MM-DD HH:MM";
+export const dashboardDateTime = "YYYY-MM-DD HH:MM:ss";
+export const datePickerDateTime = "dd MMM yyyy, h:mm a";
+export const displayDateTime = "DD MMM";
+export const datePickerFormat = "YYYY-MM-DD'T'HH:mm:ss.sssz"
+// export const displayDateTime = "DD MMM, YYYY, h:mm a";
+export const displayTime = "h:mm a";
+export const auditDate = "D, MMM. YYYY";

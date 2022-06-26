@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Animated,
     Image,
@@ -10,12 +10,15 @@ import {
     TouchableOpacity,
     ImageBackground
 } from 'react-native';
+// import SyncStorage from 'sync-storage';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 // constants
 import { images, theme } from "../../constants";
 import Login_Screen from '../../Login_Screen/Login_Screen/Login_Screen';
-const { onboarding1, onboarding2, onboarding3 ,onboardingbackground} = images;
+// import {  } from "../";
+const { onboarding1, onboarding2, onboarding3, onboardingbackground } = images;
 
 // theme
 const { COLORS, FONTS, SIZES } = theme;
@@ -38,12 +41,16 @@ const onBoardings = [
     }
 ];
 
-const OnBoarding = ({navigation}) => {
+const OnBoarding = ({ navigation }) => {
     const [completed, setCompleted] = React.useState(false);
+    const dataReducer = useSelector(state => state.loginReducer);
+    console.log("LOGIN DATA FROM STORE : ", dataReducer.user);
 
     const scrollX = new Animated.Value(0);
 
     React.useEffect(() => {
+        // const result = SyncStorage.get('userid');
+        // console.log("USER DETAILS: ", result);
         scrollX.addListener(({ value }) => {
             if (Math.floor(value / SIZES.width) === onBoardings.length - 1) {
                 setCompleted(true);
@@ -53,105 +60,121 @@ const OnBoarding = ({navigation}) => {
         return () => scrollX.removeListener();
     }, []);
 
+
+    useEffect(() => {
+        console.log("EFFECT: ", dataReducer.user.accessToken);
+        if (typeof dataReducer.user.accessToken !== 'undefined') {
+            navigation.navigate("TabBarNavigation")
+
+        }
+
+    }, [dataReducer.user])
+
     // Render
 
     function renderContent() {
         return (
             <>
-             <ImageBackground  style={{
-                 
+                <ImageBackground style={{
 
-                flex:1,
-                height:"100%"
- 
-            
-                 
-              }}   source={require("../../../Assets/background.png")} >
-            <Animated.ScrollView
-                horizontal
-                pagingEnabled
-                scrollEnabled
-                decelerationRate={0}
-                scrollEventThrottle={16}
-                snapToAlignment="center"
-                showsHorizontalScrollIndicator={false}
-                onScroll={Animated.event([
-                    { nativeEvent: { contentOffset: { x: scrollX } } },
-                ], { useNativeDriver: false })}
-            >
-                {onBoardings.map((item, index) => (
-                    <View
-                        //center
-                        //bottom
-                        key={`img-${index}`}
-                        style={styles.imageAndTextContainer}
+
+                    flex: 1,
+                    height: "100%"
+
+
+
+                }}
+                    source={require("../../../Assets/background.png")}
+                >
+                    <Animated.ScrollView
+                        horizontal
+                        pagingEnabled
+                        scrollEnabled
+                        decelerationRate={0}
+                        scrollEventThrottle={16}
+                        snapToAlignment="center"
+                        showsHorizontalScrollIndicator={false}
+                        onScroll={Animated.event([
+                            { nativeEvent: { contentOffset: { x: scrollX } } },
+                        ], { useNativeDriver: false })}
                     >
-                         <View
-                            style={{
-                               
-                              alignSelf:"center",
-                              marginTop:70
-                            }}
-                        >
-                            <Text style={{
-                                fontFamily:"Poppins-Bold",
-                                fontSize:24,
-                                fontWeight:"700",
-                                color: "#313131",
-                                textAlign: 'center',
-                                lineHeight:36
-                            }}
+                        {onBoardings.map((item, index) => (
+                            <View
+                                //center
+                                //bottom
+                                key={`img-${index}`}
+                                style={styles.imageAndTextContainer}
                             >
-                                {item.title}
-                            </Text>
+                                <View
+                                    style={{
 
-                            <Text style={{
-                                   fontFamily:"Poppins-Regular",
-                                   fontStyle:"normal",
-                                   fontSize:18,
-                                   fontWeight:"300",
-                                   color: "#313131",
-                                   textAlign: 'center',
-                                   lineHeight:27,
-                                marginTop: SIZES.base,
-                              
-                            }}
-                            >
-                                {item.description}
-                            </Text>
-                        </View>
-                        <View style={{ flex: 2, alignItems: 'center', marginTop:0 }}>
-                            <Image
-                                source={item.img}
-                                resizeMode="contain"
-                                style={{
-                                    width: "75%",
-                                    height: "75%",
-                                }}
-                            />
-                        </View>
-                     
-                        {/* Button */}
-                       
-                    </View>
-                ))}
-            </Animated.ScrollView>
-            <TouchableOpacity 
-               onPress={() => { navigation.navigate(Login_Screen) }}
-            style={{alignSelf:"center" ,backgroundColor:"#fff",width:"70%",height:"6%",justifyContent:"center",borderRadius:5,marginBottom:60}}>
-                <Text style={{alignSelf:"center"}}>
-                    Get Started
-                </Text>
-            </TouchableOpacity>
-           
+                                        alignSelf: "center",
+                                        marginTop: 70
+                                    }}
+                                >
+                                    <Text style={{
+                                        fontFamily: "Poppins-Bold",
+                                        fontSize: 24,
+                                        fontWeight: "700",
+                                        color: "#313131",
+                                        textAlign: 'center',
+                                        lineHeight: 36
+                                    }}
+                                    >
+                                        {item.title}
+                                    </Text>
 
-            </ImageBackground>
+                                    <Text style={{
+                                        fontFamily: "Poppins-Regular",
+                                        fontStyle: "normal",
+                                        fontSize: 18,
+                                        fontWeight: "300",
+                                        color: "#313131",
+                                        textAlign: 'center',
+                                        lineHeight: 27,
+                                        marginTop: SIZES.base,
 
-        
-</>
+                                    }}
+                                    >
+                                        {item.description}
+                                    </Text>
+                                </View>
+                                <View style={{ flex: 2, alignItems: 'center', marginTop: 0 }}>
+                                    <Image
+                                        source={item.img}
+                                        resizeMode="contain"
+                                        style={{
+                                            width: "75%",
+                                            height: "75%",
+                                        }}
+                                    />
+                                </View>
+
+                                {/* Button */}
+
+                            </View>
+                        ))}
+                    </Animated.ScrollView>
+                    <TouchableOpacity
+                        onPress={() => {
+                            // navigation.navigate("TabBarNavigation")
+
+                            navigation.navigate("Login_Screen")
+                        }}
+                        style={{ alignSelf: "center", backgroundColor: "#fff", width: "70%", height: "6%", justifyContent: "center", borderRadius: 5, marginBottom: 60 }}>
+                        <Text style={{ alignSelf: "center" }}>
+                            Get Started
+                        </Text>
+                    </TouchableOpacity>
+
+
+                </ImageBackground>
+
+
+            </>
         );
     }
-//{DOT}
+
     function renderDots() {
 
         const dotPosition = Animated.divide(scrollX, SIZES.width);
@@ -207,7 +230,7 @@ const styles = StyleSheet.create({
     },
     dotsRootContainer: {
         position: 'absolute',
-        bottom: '16%' ,
+        bottom: '16%',
     },
     dotsContainer: {
         flexDirection: 'row',

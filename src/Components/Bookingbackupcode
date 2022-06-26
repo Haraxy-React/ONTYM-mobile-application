@@ -1,0 +1,1209 @@
+import { View, Text, SafeAreaView, TouchableOpacity, Image, FlatList, StyleSheet, StatusBar, Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import moment from "moment"
+import profilelarge from "../Assets/profile1.png"
+import profileimagesmall from "../Assets/profilesmall.png"
+
+import paramount from "../Assets/paramount_vector.png";
+import mongolia from "../Assets/mongolia_vector.png";
+import lake from "../Assets/Lake_vector.png";
+import { TextInput } from 'react-native-paper';
+import DropDownPicker from 'react-native-dropdown-picker'
+import Multiselect from 'multiselect-react-dropdown';
+import { ScrollView } from 'react-native-gesture-handler';
+
+const Booking_Screen = () => {
+  const [text, setText] = React.useState("")
+  const [currentDate, setCurrentDate] = useState('');
+  const [bg, setbg] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [openbottomsheet, Setopenbottomsheet] = useState('');
+  const [properties, setproperties] = useState()
+
+  const staticData = [
+    {
+      id: 0,
+      value: "Lonavala",
+      properties: [{
+        properties_id: 0,
+        name: "paramount",
+        staff: {
+          staff_name: {
+            staff1: "Sushil",
+            staff2: "Mayank",
+          }
+        }
+      },
+      {
+        properties_id: 1,
+        name: "Hillside",
+        staff: {
+          staff_name: {
+            staff1: "Vineet",
+            staff2: "Mehul",
+          }
+        }
+      },
+      {
+        properties_id: 2,
+        name: "The Haven",
+        staff: {
+          staff_name: {
+            staff1: "Pratik",
+            staff2: "Gaurav",
+          }
+        }
+      }
+
+      ]
+    },
+    {
+      id: 1,
+      value: "goa",
+      properties: [{
+        properties_id: 0,
+        name: "Palace",
+        staff: {
+          staff_name: {
+            staff1: "Akshay",
+            staff2: "karan",
+          }
+        }
+      },
+      {
+        properties_id: 1,
+        name: "Sambhav Palace",
+        staff: {
+          staff_name: {
+            staff1: "Anubhav",
+            staff2: "Ronak",
+          }
+        }
+      },
+
+      ]
+
+    },
+
+
+  ];
+
+
+  useEffect(() => {
+    const city = []
+    const property = []
+    for (let i = 0; i < staticData.length; i++) {
+
+      console.log("city", staticData[i].value);
+      city.push(staticData[i].value)
+      for (let j = 0; j < staticData[i].properties.length; j++) {
+        console.log("city", staticData[i].properties[j].name);
+        property.push(staticData[i].properties[j].name)
+
+      }
+      setproperties(property)
+    }
+    setCurrentDate('December');
+  }, []);
+  const opensheet = () => {
+    setbg(true)
+  }
+  const closesheet = () => {
+    setbg(false)
+  }
+  const renderContent = () => (
+    openbottomsheet === "Filter" ?
+      <View
+        style={{
+          backgroundColor: '#fff',
+          paddingHorizontal: 20,
+          paddingTop: 100,
+          height: "100%",
+        }}>
+
+        <View style={{ backgroundColor: "#c4c4c4", height: 10, width: 40, borderRadius: 10, alignSelf: "center", marginTop: 5 }} />
+
+
+        <ScrollView
+
+        >
+
+          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <Image resizeMode={"contain"} style={{ width: 20, height: 20, }} source={require('../Assets/Filter.png')} />
+            <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 24, color: "#000000", marginLeft: 20, marginTop: -5 }}>Filters</Text>
+
+          </View>
+          <View >
+            <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 18, color: "#000000" }} >Location</Text>
+
+            <DropDownPicker
+              items={[
+                { label: 'English', value: 'en' },
+                { label: 'Deutsch', value: 'de' },
+                { label: 'French', value: 'fr' },
+              ]}
+              defaultIndex={0}
+              containerStyle={{ height: 40 }}
+              onChangeItem={item => console.log(item.label, item.value)}
+            />
+            {/* <RNMultiSelect
+  disableAbsolute
+  data={staticData}
+  onSelect={(selectedItems) => console.log("SelectedItems: ", selectedItems)}
+  menuItemTextStyle={{color:"green"}}
+  menuBarContainerStyle={{backgroundColor:"#c4c4c4"}}
+/> */}
+
+          </View>
+          <View style={{ marginTop: 25, }}>
+            <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 18, color: "#000000" }} >Properties</Text>
+
+            <DropDownPicker
+              items={[
+                { label: 'English', value: 'en' },
+                { label: 'Deutsch', value: 'de' },
+                { label: 'French', value: 'fr' },
+              ]}
+              defaultIndex={0}
+              containerStyle={{ height: 40 }}
+              onChangeItem={item => console.log(item.label, item.value)}
+            />
+
+
+          </View>
+          <View style={{ marginTop: 25, }}>
+            <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 18, color: "#000000" }} >Staff</Text>
+
+            <DropDownPicker
+              items={[
+                { label: 'English', value: 'en' },
+                { label: 'Deutsch', value: 'de' },
+                { label: 'French', value: 'fr' },
+              ]}
+              defaultIndex={0}
+              containerStyle={{ height: 40 }}
+              onChangeItem={item => console.log(item.label, item.value)}
+            />
+
+
+          </View>
+
+
+        </ScrollView>
+
+      </View>
+      : openbottomsheet === "Addbooking" ?
+        <View
+          style={{
+            backgroundColor: '#fff',
+            paddingHorizontal: 20,
+            paddingTop: 100,
+            height: "100%",
+          }}>
+
+          <View style={{ backgroundColor: "#c4c4c4", height: 10, width: 40, borderRadius: 10, alignSelf: "center", marginTop: 5 }} />
+
+
+          <ScrollView
+
+          >
+
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
+              <Image resizeMode={"contain"} style={{ width: 20, height: 20, }} source={require('../Assets/Filter.png')} />
+              <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 24, color: "#000000", marginLeft: 20, marginTop: -5 }}>Add Booking</Text>
+
+            </View>
+            <TextInput
+              label="Guest Name"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+
+            />
+            <TextInput
+              label="E-mail Id"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Contact Number"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Number of guest"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Check-In Date"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+              right={<TextInput.Icon name="calendar-multiselect" />}
+            />
+            <TextInput
+              label="Check-Out Date"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+              right={<TextInput.Icon name="calendar-multiselect" />}
+            />
+            <TextInput
+              label="Booking Amount"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Advance Amount"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Payment Type"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Booking Name"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+
+                console.log('adsasd');
+              }}
+              style={{ flexDirection: "row", marginTop: 10 }}>
+              <Icon name='plus' style={{ color: "#2D9cDB" }} size={30} />
+              <Text style={{ fontSize: 18, fontFamily: "Poppins-Regular", lineHeight: 27, color: "#2D9cDB", marginTop: 3, marginLeft: 10 }} >Add Advance Payment</Text>
+            </TouchableOpacity>
+
+            <TextInput
+              label="Balance Amount"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Payment Type"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TextInput
+              label="Bank Name"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+
+                console.log('adsasd');
+              }}
+              style={{ flexDirection: "row", marginTop: 10 }}>
+              <Icon name='plus' style={{ color: "#2D9cDB" }} size={30} />
+              <Text style={{ fontSize: 18, fontFamily: "Poppins-Regular", lineHeight: 27, color: "#2D9cDB", marginTop: 3, marginLeft: 10 }} >Add Balance Payment</Text>
+            </TouchableOpacity>
+
+            <TextInput
+              label="Sales Person Name"
+              mode="outlined"
+              value={text}
+              onChangeText={text => setText(text)}
+              style={{ marginTop: 20 }}
+            />
+
+            <View style={{ alignSelf: "center", width: 135, height: 46, marginVertical: 20, backgroundColor: "#2d9cdb", borderRadius: 8, justifyContent: "center", alignItems: "center" }}>
+              <Text style={{ fontSize: 18, fontWeight: "600", color: "#fcfcfc" }}>  Submit  </Text>
+            </View>
+
+          </ScrollView>
+
+        </View> :
+        <View
+          style={{
+            backgroundColor: '#fff',
+            paddingHorizontal: 20,
+
+            height: "100%",
+          }}>
+
+          <View style={{ backgroundColor: "#c4c4c4", height: 10, width: 40, borderRadius: 10, alignSelf: "center", marginTop: 5 }} />
+
+
+          <ScrollView
+
+          >
+
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
+              <Image resizeMode={"contain"} style={{ width: 20, height: 20, }} source={require('../Assets/Filter.png')} />
+              <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 24, color: "#000000", marginLeft: 20, marginTop: -5 }}>Filters</Text>
+
+            </View>
+            <View >
+              <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 18, color: "#000000" }} >Location</Text>
+
+              <DropDownPicker
+                items={[
+                  { label: 'English', value: 'en' },
+                  { label: 'Deutsch', value: 'de' },
+                  { label: 'French', value: 'fr' },
+                ]}
+                defaultIndex={0}
+                containerStyle={{ height: 40 }}
+                onChangeItem={item => console.log(item.label, item.value)}
+              />
+              {/* <RNMultiSelect
+                  disableAbsolute
+                  data={staticData}
+                  onSelect={(selectedItems) => console.log("SelectedItems: ", selectedItems)}
+                  menuItemTextStyle={{color:"green"}}
+                  menuBarContainerStyle={{backgroundColor:"#c4c4c4"}}
+                /> */}
+
+            </View>
+            <View style={{ marginTop: 25, }}>
+              <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 18, color: "#000000" }} >Properties</Text>
+
+              <DropDownPicker
+                items={[
+                  { label: 'English', value: 'en' },
+                  { label: 'Deutsch', value: 'de' },
+                  { label: 'French', value: 'fr' },
+                ]}
+                defaultIndex={0}
+                containerStyle={{ height: 40 }}
+                onChangeItem={item => console.log(item.label, item.value)}
+              />
+
+
+            </View>
+            <View style={{ marginTop: 25, }}>
+              <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 18, color: "#000000" }} >Staff</Text>
+
+              <DropDownPicker
+                items={[
+                  { label: 'English', value: 'en' },
+                  { label: 'Deutsch', value: 'de' },
+                  { label: 'French', value: 'fr' },
+                ]}
+                defaultIndex={0}
+                containerStyle={{ height: 40 }}
+                onChangeItem={item => console.log(item.label, item.value)}
+              />
+
+
+            </View>
+
+
+          </ScrollView>
+
+        </View>
+
+
+
+
+
+  );
+
+  const sheetRef = React.useRef(null);
+
+
+
+  return (
+    <SafeAreaView style={{ height: "92%", backgroundColor: "#fff" }}>
+      <View style={bg ? { backgroundColor: "#000000bf", opacity: 0.75 } : { backgroundColor: "#fff" }}>
+        <View style={{ backgroundColor: "#2D9cDB", height: 80, justifyContent: "space-between", flexDirection: "row", paddingHorizontal: 20, alignContent: "center", paddingTop: 35 }}>
+          <Text style={{ color: "#fff", fontSize: 20, lineHeight: 27, fontWeight: "700", width: 200 }}>Booking </Text>
+          <TouchableOpacity onPress={() => console.log("asd")}>
+            <Icon name='dots-vertical' style={{ color: "#fff" }} size={24} />
+          </TouchableOpacity>
+
+        </View>
+        <View style={{ justifyContent: "space-between", flexDirection: "row", paddingHorizontal: 10, alignContent: "center", paddingTop: 15, borderBottomWidth: 2, borderColor: "#a6a4a4", margin: 10, padding: 10 }}>
+          <View style={bg ? { flexDirection: "row", backgroundColor: "#000000bf", opacity: 0.75 } : { flexDirection: "row", backgroundColor: "#fff" }}>
+            <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "400", fontSize: 14, color: "#000000", }}>Month:  {currentDate}</Text>
+            <Icon name='calendar-range' style={{ color: "#000", marginTop: 3 }} size={16} />
+          </View>
+          <TouchableOpacity onPress={() => {
+            Setopenbottomsheet('Filter')
+            setbg(true)
+            sheetRef.current.snapTo(1)
+          }}>
+            <Image resizeMode={"contain"} style={{ width: 20, height: 20 }} source={require('../Assets/Filter.png')} />
+          </TouchableOpacity>
+        </View>
+        <ScrollView >
+
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "column", width: 40 }}>
+              <Icon name='bank' style={{ color: "#2d9cdb" }} size={40} />
+
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+              <View style={{ marginTop: 10, borderBottomWidth: 1 }}>
+                <Icon name='calendar-blank' style={{ color: "#2d9cdb", }} size={40} />
+                <Text style={{ fontSize: 13, alignSelf: "center" }}> Mon</Text>
+              </View>
+            </View>
+            <ScrollView horizontal>
+              <View >
+
+
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 20, marginHorizontal: 10, }}>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 185 }}>Lonavla</Text>
+                  <Text> |</Text>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 185 }}>Goa</Text>
+                </View>
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 30, marginHorizontal: 10, }}>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 30, marginVertical: 5 }}>paramount</Text>
+                  <Text style={{ fontSize: 20 }}>|</Text>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 45, marginVertical: 5 }}>Hillside</Text>
+                  <Text style={{ fontSize: 20 }}>|</Text>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 30, marginVertical: 5 }}>The Haven</Text>
+                  <Text style={{ fontSize: 20 }}>|</Text>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 60, marginVertical: 5 }}>Palace</Text>
+                  <Text style={{ fontSize: 20 }}>|</Text>
+                  <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", paddingHorizontal: 60, marginVertical: 5 }}>Sambhav Palace</Text>
+                </View>
+
+                {/* first */}
+
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 60, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* second */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* third */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <TouchableOpacity onPress={() => {
+                      Setopenbottomsheet('Addbooking')
+                      setbg(true)
+                      sheetRef.current.snapTo(2)
+                    }} style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}></Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>      </Text>
+                    </TouchableOpacity>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* fourth      */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* fifth */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* sixth */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* seventh */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+                {/* eigthth */}
+                <View style={{ flexDirection: "row", borderBottomWidth: 1, height: 70, marginHorizontal: 10, }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Sushil</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mayank</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 38, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Vineet</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Mehul</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 31, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Pratik</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Gaurav</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderRightWidth: 1, marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Akshay</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Karan</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 3 }}>
+                    <View style={{ paddingHorizontal: 48, marginVertical: 5 }}>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", }}>Aunbhav</Text>
+                      <Text style={{ fontSize: 14, fontFamily: "Poppins-Regular", color: "#2d9cdb" }}>Ronak</Text>
+                    </View>
+                    <Icon name='chevron-right' style={{ marginTop: 10, color: "#000" }} size={25} />
+                  </View>
+                </View>
+
+              </View>
+
+
+
+            </ScrollView>
+          </View>
+        </ScrollView>
+
+        {/* <Image resizeMode={"contain"} style={{width:238,height:238,alignSelf:"center",marginTop:110}} source={require('../Assets/booking.png')}/>
+      <Text style={{alignSelf:"center",fontWeight:"500",fontSize:24,lineHeight:36,letterSpacing:0.1,fontFamily:"Poppins-Regular",textAlign:"center"}}>Please  Filter your requirements for booking.</Text> */}
+      </View>
+
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[0, "40%", "88%"]}
+        borderRadius={20}
+        onOpenEnd={opensheet}
+        initialSnap={0}
+        onCloseEnd={closesheet}
+        renderContent={renderContent}
+      />
+    </SafeAreaView>
+  );
+};
+
+export default Booking_Screen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: "#fff"
+  },
+  centeredView: {
+
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+  ,
+  item: {
+    backgroundColor: '#fff',
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between"
+
+  },
+  title: {
+    fontSize: 32,
+  },
+});
+
+
+
+
+ // <SafeAreaView style={{ height: "92%", backgroundColor: "#fff" }}>
+    //   <Loader show={loader} />
+
+    //   <View style={bg ? { backgroundColor: "#000000bf", opacity: 0.75 } : { backgroundColor: "#fff" }}>
+    //     <View style={{ backgroundColor: "#2D9cDB", height: 80, justifyContent: "space-between", flexDirection: "row", paddingHorizontal: 20, alignContent: "center", paddingTop: 35 }}>
+    //       <Text style={{ color: "#fff", fontSize: 20, lineHeight: 27, fontWeight: "700", width: 200 }}>Booking </Text>
+    //       <TouchableOpacity onPress={() => console.log("asd")}>
+    //         <Icon name='dots-vertical' style={{ color: "#fff" }} size={24} />
+    //       </TouchableOpacity>
+
+    //     </View>
+    //     <View style={{ justifyContent: "space-between", flexDirection: "row", paddingHorizontal: 10, alignContent: "center", paddingTop: 15, borderBottomWidth: 2, borderColor: "#a6a4a4", margin: 10, padding: 10 }}>
+    //       <TouchableOpacity onPress={() => {
+    //         setFilterDatePicker(true)
+    //       }}>
+    //         <View style={bg ? { flexDirection: "row", backgroundColor: "#000000bf", opacity: 0.75 } : { flexDirection: "row", backgroundColor: "#fff" }}>
+    //           <Text style={{ fontFamily: "Poppins-Regular", fontWeight: "400", fontSize: 14, color: "#000000", }}>Date:  {moment(filterDate).format(dbDate)}</Text>
+    //           <Icon name='calendar-range' style={{ color: "#000", marginTop: 3 }} size={16} />
+    //         </View>
+    //       </TouchableOpacity>
+
+
+    //       {
+    //         showFilterDatePicker ?
+    //           <DateTimePicker
+    //             testID="dateTimePicker"
+    //             value={filterDate}
+    //             mode={"date"}
+    //             is24Hour={true}
+
+    //             display="default"
+    //             onChange={(event, selectedValue) => {
+    //               // setShowCheckInDate(false)
+    //               setFilterDatePicker(Platform.OS === 'ios');
+    //               // if (displaymode == 'date') {
+    //               const currentDate = selectedValue || new Date();
+    //               setFilterDate(currentDate);
+    //               // setMode('time');
+    //               setFilterDatePicker(Platform.OS === 'ios');
+    //               filterData(selectedValue)
+    //               // setLoader(false)
+    //               // }
+
+    //             }} /> : null
+    //       }
+
+    //       <TouchableOpacity onPress={() => {
+    //         Setopenbottomsheet('Filter')
+    //         setbg(true)
+    //         sheetRef.current.snapTo(1)
+    //       }}>
+    //         <Image resizeMode={"contain"} style={{ width: 20, height: 20 }} source={require('../Assets/Filter.png')} />
+    //       </TouchableOpacity>
+    //     </View>
+    //     <ScrollView >
+
+
+    //     </ScrollView>
+
+    //     {/* <Image resizeMode={"contain"} style={{width:238,height:238,alignSelf:"center",marginTop:110}} source={require('../Assets/booking.png')}/>
+    //   <Text style={{alignSelf:"center",fontWeight:"500",fontSize:24,lineHeight:36,letterSpacing:0.1,fontFamily:"Poppins-Regular",textAlign:"center"}}>Please  Filter your requirements for booking.</Text> */}
+    //   </View>
+    //   <ScrollView
+    //   // horizontal
+    //   >
+
+    //     {/* <ScrollView> */}
+    //     {
+    //       bookingList.map((item, index) => {
+    //         return (
+    //           <TouchableOpacity
+    //             onPress={() => {
+    //               updateReq(item);
+    //             }}
+    //           >
+    //             <View
+    //               style={[styles.card, styles.shadowProp, styles.elevation]}
+    //             >
+    //               <View
+    //                 style={styles.bookingStyle}>
+    //                 <Text style={styles.bookingTextstyle}
+    //                 >Guest Name: </Text>
+    //                 <Text style={styles.bookingTextstyle}
+    //                 >
+    //                   {item.guest_Name}
+    //                 </Text>
+
+    //               </View>
+    //               <View style={styles.bookingStyle} >
+    //                 <Text style={styles.bookingTextstyle}
+    //                 >Check-in date: </Text>
+    //                 <Text style={styles.bookingTextstyle}
+    //                 >
+
+    //                   {moment(item.checkin_Date).format(dbDateTime)}
+
+    //                 </Text>
+
+    //               </View>
+    //               <View
+    //                 style={styles.bookingStyle}
+    //               >
+    //                 <Text
+    //                   style={styles.bookingTextstyle}
+
+    //                 >Check-out date: </Text>
+    //                 <Text
+    //                   style={styles.bookingTextstyle}
+
+
+    //                 >{
+    //                     moment(item.checkout_Date).format(dbDateTime)
+
+
+    //                   }</Text>
+
+    //               </View>
+    //               <View
+    //                 style={styles.bookingStyle}
+    //               >
+    //                 <Text
+    //                   style={styles.bookingTextstyle}
+
+    //                 >Staff: </Text>
+    //                 <Text style={styles.bookingTextstyle}
+    //                 >{item.sales_person_Name}</Text>
+    //               </View>
+    //               <View
+    //                 style={styles.bookingStyle}>
+    //                 <Text style={styles.bookingTextstyle}>Status: </Text>
+    //                 <View style={{
+    //                   justifyContent: "space-between",
+    //                   alignItems: "center", backgroundColor: item.booking_status === "0" ? "red" : item.booking_status === "1" ? "rgb(124, 36, 237)" : item.booking_status === "2" ? "rgb(126, 211, 33)" : "white",
+    //                   borderRadius: 5, alignSelf: "center"
+    //                 }} >
+    //                   <Text style={{
+    //                     color: "white", padding: 3,
+    //                     fontFamily: "Poppins-SemiBold", fontWeight: "500", fontSize: 12
+
+    //                   }}>
+    //                     {item.booking_status === "0" ?
+    //                       "Pending" : item.booking_status === "1" ? "Advance" : item.booking_status === "2" ? "Completed" : ''}
+    //                   </Text>
+    //                 </View>
+    //               </View>
+
+    //             </View>
+    //           </TouchableOpacity>
+    //         )
+
+    //       })
+
+    //       // bookingList.map((item, index) => {
+    //       //   return (
+    //       //     <DataTable.Row
+    //       //       onPress={() => {
+    //       //         updateReq(item);
+    //       //         console.log(item);
+    //       //       }}
+    //       //       key={index}  >
+    //       //       <DataTable.Cell s
+    //       //       // tyle={{ flex: 3 }}
+    //       //       >
+    //       //         <Text style={{
+    //       //           fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 12, color: "#000000"
+
+    //       //         }} >
+    //       //           {item.guest_Name}
+    //       //         </Text>
+    //       //       </DataTable.Cell>
+    //       //       <DataTable.Cell
+    //       //       // style={{ flex: 4 }}
+    //       //       >
+    //       //         <Text style={{
+    //       //           fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 12, color: "#000000"
+
+    //       //         }} >
+    //       //           {item.checkin_Date}
+    //       //         </Text>
+    //       //       </DataTable.Cell>
+    //       //       <DataTable.Cell
+    //       //       // style={{ flex: 4 }}
+    //       //       >
+    //       //         <Text style={{
+    //       //           fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 12, color: "#000000"
+
+    //       //         }} >
+    //       //           {item.checkout_Date}
+    //       //         </Text>
+    //       //       </DataTable.Cell>
+    //       //       <DataTable.Cell
+    //       //       // style={{ flex: 3 }}
+    //       //       >
+    //       //         <Text style={{
+    //       //           fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 12, color: "#000000"
+
+    //       //         }} >
+    //       //           {item.sales_person_Name}
+    //       //         </Text>
+    //       //       </DataTable.Cell>
+    //       //       <DataTable.Cell
+    //       //       // style={{ flex: 3 }}
+    //       //       >
+    //       //         <Text style={{
+    //       //           fontFamily: "Poppins-Regular", fontWeight: "500", fontSize: 12, color: "#000000"
+
+    //       //         }} >
+    //       //           {item.booking_status}
+    //       //         </Text>
+    //       //       </DataTable.Cell>
+    //       //     </DataTable.Row>
+    //       //   )
+    //       // })
+
+    //     }
+    //     {/* </ScrollView> */}
+    //   </ScrollView>
+
+    //   {/* <DataTable>
+    //     <DataTable.Pagination
+    //       page={page}
+    //       numberOfPages={Math.ceil(items.length / numberOfItemsPerPage)}
+    //       onPageChange={page => setPage(page)}
+    //       label={`${from + 1}-${to} of ${items.length}`}
+    //       showFastPaginationControls
+    //       numberOfItemsPerPageList={numberOfItemsPerPageList}
+    //       numberOfItemsPerPage={numberOfItemsPerPage}
+    //       onItemsPerPageChange={onItemsPerPageChange}
+    //       selectPageDropdownLabel={'Rows per page'}
+    //     />
+    //   </DataTable> */}
+    //   <TouchableOpacity
+    //     onPress={() => {
+    //       console.log("asdasS");
+    //       Setopenbottomsheet('Addbooking')
+    //       setbg(true)
+    //       sheetRef.current.snapTo(2)
+    //     }}
+    //     style={{ borderWidth: 0.5, borderRadius: 25, height: 50, width: 50, alignSelf: "center", justifyContent: "center", alignItems: "center", position: "absolute", bottom: 15, right: 20, backgroundColor: "#fff" }}>
+    //     <Icon name='plus' style={{ color: "#000" }} size={50} />
+    //   </TouchableOpacity>
+
+    // </SafeAreaView>
+
+
+
+
+
+
+
+
+
+
+
+
+     if (user.permission_list != null) {
+                                  if (user.permission_list[0].view_access_given_per_individual_property) {
+                                    setUpdateObj(dataBooking.booking[0])
+                                    Setopenbottomsheet('fewDetails')
+                                    setbg(true)
+                                    sheetRef.current.snapTo(1)
+                                  }
+                                }
